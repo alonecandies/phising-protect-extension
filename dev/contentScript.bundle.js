@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "769590e7a8c2cbbdc610";
+/******/ 	var hotCurrentHash = "b84ee69e5218fe45bfb3";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -854,7 +854,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(25)(__webpack_require__.s = 25);
+/******/ 	return hotCreateRequire(6)(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1336,6 +1336,34 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
 
 /***/ }),
 
+/***/ "./node_modules/webpack/buildin/global.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g; // This works in non-strict mode
+
+g = function () {
+  return this;
+}();
+
+try {
+  // This works if eval is allowed (see CSP)
+  g = g || new Function("return this")();
+} catch (e) {
+  // This works if the window reference is available
+  if (typeof window === "object") g = window;
+} // g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+
+module.exports = g;
+
+/***/ }),
+
 /***/ "./node_modules/webpack/hot/dev-server.js":
 /*!***********************************!*\
   !*** (webpack)/hot/dev-server.js ***!
@@ -1535,87 +1563,44 @@ module.exports.formatError = function (err) {
 /*!************************************!*\
   !*** ./src/contentScript/index.js ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: injectScript */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// // If your extension doesn't need a content script, just leave this file empty
-// // This is an example of a script that will run on every page. This can alter pages
-// // Don't forget to change `matches` in manifest.json if you want to only change specific webpages
-// // This needs to be an export due to typescript implementation limitation of needing '--isolatedModules' tsconfig
-// import browser from "webextension-polyfill";
-// import { WindowPostMessageStream } from "@metamask/post-message-stream";
-// import PortStream from "extension-port-stream";
-// import pump from "pump";
-// import ObjectMultiplex from "obj-multiplex";
-// const CONTENT_SCRIPT = "krystal-contentscript";
-// const PROVIDER = "metamask-provider";
-// const INPAGE = "krystal-inpage";
-// export function injectScript(file_path, tag) {
-//   console.log("inject");
-//   const container = document.head || document.documentElement;
-//   const scriptTag = document.createElement("script");
-//   scriptTag.setAttribute("async", "false");
-//   scriptTag.setAttribute("type", "text/javascript");
-//   scriptTag.setAttribute("src", file_path);
-//   container.insertBefore(scriptTag, container.children[0]);
-//   container.removeChild(scriptTag);
-//   // var node = document.getElementsByTagName(tag)[0];
-//   // var script = document.createElement("script");
-//   // script.setAttribute("type", "text/javascript");
-//   // script.setAttribute("src", file_path);
-//   // node.appendChild(script);
-// }
-// /**
-//  * Sets up two-way communication streams between the
-//  * browser extension and local per-page browser context.
-//  *
-//  */
-// function forwardTrafficBetweenMuxes(channelName, muxA, muxB) {
-//   const channelA = muxA.createStream(channelName);
-//   const channelB = muxB.createStream(channelName);
-//   pump(channelA, channelB, channelA, (error) =>
-//     console.debug(`MetaMask: Muxed traffic for channel "${channelName}" failed.`, error),
-//   );
-// }
-// async function setupStreams() {
-//   // the transport-specific streams for communication between inpage and background
-//   const pageStream = new WindowPostMessageStream({
-//     name: CONTENT_SCRIPT,
-//     target: INPAGE,
-//   });
-//   const extensionPort = browser.runtime.connect({ name: CONTENT_SCRIPT });
-//   const extensionStream = new PortStream(extensionPort);
-//   const pageMux = new ObjectMultiplex();
-//   pageMux.setMaxListeners(25);
-//   const extensionMux = new ObjectMultiplex();
-//   extensionMux.setMaxListeners(25);
-//   pump(pageMux, pageStream, pageMux, (err) => console.log(err));
-//   pump(extensionMux, extensionStream, extensionMux, (err) => {
-//     console.log(err);
-//   });
-//   forwardTrafficBetweenMuxes(PROVIDER, pageMux, extensionMux);
-//   extensionStream.on("data", (data) => {
-//     console.log(data.data)
-//   });
-//   // window.addEventListener("message",function (event) {
-//   //     extensionPort.postMessage(event);
-//   //   },false,
-//   // );
-// }
-// injectScript(global.chrome.extension.getURL("inpage.js"), "body");
-// setupStreams();
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "injectScript", function() { return injectScript; });
+// If your extension doesn't need a content script, just leave this file empty
+// This is an example of a script that will run on every page. This can alter pages
+// Don't forget to change `matches` in manifest.json if you want to only change specific webpages
+// This needs to be an export due to typescript implementation limitation of needing '--isolatedModules' tsconfig
+function injectScript(file_path, tag) {
+  console.log("inject");
+  const container = document.head || document.documentElement;
+  const scriptTag = document.createElement("script");
+  scriptTag.setAttribute("async", "false");
+  scriptTag.setAttribute("type", "text/javascript");
+  scriptTag.setAttribute("src", file_path);
+  container.insertBefore(scriptTag, container.children[0]);
+  container.removeChild(scriptTag); // var node = document.getElementsByTagName(tag)[0];
+  // var script = document.createElement("script");
+  // script.setAttribute("type", "text/javascript");
+  // script.setAttribute("src", file_path);
+  // node.appendChild(script);
+}
+injectScript(global.chrome.extension.getURL("inpage.js"), "body");
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
-/***/ 25:
+/***/ 6:
 /*!**********************************************************************!*\
   !*** multi (webpack)/hot/dev-server.js ./src/contentScript/index.js ***!
   \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/maddie/Desktop/Work/junctionx/fire-phoenix/node_modules/webpack/hot/dev-server.js */"./node_modules/webpack/hot/dev-server.js");
-module.exports = __webpack_require__(/*! /Users/maddie/Desktop/Work/junctionx/fire-phoenix/src/contentScript/index.js */"./src/contentScript/index.js");
+__webpack_require__(/*! /Users/maddie/Desktop/Work/junctionx/ext-manifest2-ff/node_modules/webpack/hot/dev-server.js */"./node_modules/webpack/hot/dev-server.js");
+module.exports = __webpack_require__(/*! /Users/maddie/Desktop/Work/junctionx/ext-manifest2-ff/src/contentScript/index.js */"./src/contentScript/index.js");
 
 
 /***/ })

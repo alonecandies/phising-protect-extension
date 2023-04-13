@@ -1,6 +1,3 @@
-import BigNumber from "bignumber.js";
-import { min } from "lodash";
-
 export function filterNumberInput(event: any, value: any, preVal: any) {
   let strRemoveText = value.replace(/[^0-9.]/g, "");
   let str = strRemoveText.replace(/\./g, (val: any, i: any) => {
@@ -34,101 +31,6 @@ export const ipToNumber = (ip: string) => {
 export function calculatePriceDifference(currentRate: number, refRate: number) {
   return ((currentRate - refRate) / refRate) * 100;
 }
-
-export function toBigAmount(number: number | string, decimal = 18): string {
-  const bigNumber = new BigNumber(number.toString());
-  return bigNumber.times(Math.pow(10, decimal)).toFixed(0);
-}
-
-export function calculateTxFee(
-  gasPrice: number | string,
-  gasLimit: number | string,
-  precision = 7
-) {
-  return roundNumber(
-    multiplyOfTwoNumber(toGwei(gasPrice), gasLimit),
-    precision
-  );
-}
-
-export function toGwei(number: number | string) {
-  const bigNumber = new BigNumber(number.toString());
-  return bigNumber.div(1000000000).toString();
-}
-
-export function toWei(number: number | string) {
-  return toBigAmount(number, 9);
-}
-
-export function roundNumber(
-  number: number | string,
-  precision = 6,
-  isFormatted = false
-) {
-  if (!number) return 0;
-
-  const amountBigNumber = new BigNumber(number);
-  const amountString = amountBigNumber.toFixed().toString();
-  const indexOfDecimal = amountString.indexOf(".");
-  const roundedNumber =
-    indexOfDecimal !== -1
-      ? amountString.slice(0, indexOfDecimal + (precision + 1))
-      : amountString;
-
-  return isFormatted ? formatNumber(roundedNumber, precision) : roundedNumber;
-}
-
-export function multiplyOfTwoNumber(
-  firstNumber: number | string,
-  secondNumber: number | string
-) {
-  const firstBigNumber = new BigNumber(firstNumber);
-  const secondBigNumber = new BigNumber(secondNumber);
-
-  return firstBigNumber.multipliedBy(secondBigNumber).toString();
-}
-
-export function formatNumber(number: any, precision = 0) {
-  if (!number) return 0;
-  if (number > 0 && number < 1) return toMeaningfulNumber(+number);
-
-  let bigNumber = new BigNumber(number);
-  let formattedNumber = bigNumber.toFormat(precision);
-  const numberParts = formattedNumber.split(".");
-
-  if (numberParts.length === 2 && !+numberParts[1]) {
-    formattedNumber = numberParts[0];
-  }
-
-  return formattedNumber;
-}
-
-export const formatNumberV2 = (
-  number: any,
-  decimals = 0,
-  isAbsolutely = false
-) => {
-  const bigNumber = new BigNumber(number);
-
-  if (bigNumber.isZero()) return "0";
-
-  if (bigNumber.isGreaterThan(0) && bigNumber.isLessThan(1)) {
-    try {
-      const decimalPart = bigNumber.toString().split(".")[1];
-      const firstMeaningfulNumberIndex = decimalPart.search("[1-9]") + 4;
-      const numberDecimals = isAbsolutely
-        ? firstMeaningfulNumberIndex
-        : min([decimals, firstMeaningfulNumberIndex]);
-      const decimalPartReFormatted = decimalPart.slice(0, numberDecimals);
-
-      return new BigNumber(`0.${decimalPartReFormatted}`).toString();
-    } catch (e) {
-      return "0";
-    }
-  }
-
-  return new BigNumber(bigNumber.toFixed(decimals)).toFormat();
-};
 
 export function toMeaningfulNumber(number: number): number {
   const meaningfulNumber = number.toFixed(20).match(/^-?\d*\.?0*\d{0,4}/);
