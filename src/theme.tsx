@@ -33,24 +33,24 @@ const components = {
     },
   },
   Input: {
-    variants: {
-      custom: {
-        field: {
-          bg: "gray.900",
-          borderColor: "gray.900",
-          borderRadius: "16px",
-          fontSize: "sm",
-          _placeholder: { color: "whiteAlpha.500" },
-          _focus: {
-            border: "1px solid",
-            borderColor: "primary.300",
-          },
-        },
-      },
-    },
-    defaultProps: {
-      variant: "custom", // null here
-    },
+    // variants: {
+    //   custom: {
+    //     field: {
+    //       bg: "gray.900",
+    //       borderColor: "gray.900",
+    //       borderRadius: "16px",
+    //       fontSize: "sm",
+    //       _placeholder: { color: "whiteAlpha.500" },
+    //       _focus: {
+    //         border: "1px solid",
+    //         borderColor: "primary.300",
+    //       },
+    //     },
+    //   },
+    // },
+    // defaultProps: {
+    //   variant: "custom", // null here
+    // },
   },
   Modal: {
     baseStyle: {
@@ -83,7 +83,7 @@ const theme = extendTheme({
   colors: {
     primary: {
       100: "#b9f5df",
-      200: "#1de9b6",
+      200: "#28A745",
       300: "#00e2a4",
       400: "#00e2a4",
       500: "#00da93",
@@ -121,12 +121,11 @@ const theme = extendTheme({
   breakpoints,
   components,
   config: {
-    initialColorMode: "dark",
+    initialColorMode: "light",
   },
   styles: {
     global: {
       body: {
-        bg: "gray.900",
         position: "relative",
         mx: "auto",
         fontSize: "100%",
@@ -135,8 +134,8 @@ const theme = extendTheme({
         display: "flex",
         flexDir: "column",
         overflowX: "hidden",
-        w: "350px",
-        h: "350px",
+        w: "325px",
+        minH: "365px",
       },
       ".root-options": {
         w: "100% !important",

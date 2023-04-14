@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "b84ee69e5218fe45bfb3";
+/******/ 	var hotCurrentHash = "c068663d069e8fc779e7";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -13060,6 +13060,7 @@ module.exports.formatError = function (err) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
 /* harmony import */ var webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webextension_polyfill__WEBPACK_IMPORTED_MODULE_0__);
+/* eslint-disable no-undef */
 
 const connections = {};
 global.connections = connections;
@@ -13071,7 +13072,6 @@ async function initialize() {
 
 webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default.a.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "get_page_info") {
-    // eslint-disable-next-line no-undef
     chrome.tabs.query({
       active: true,
       currentWindow: true
@@ -13081,6 +13081,19 @@ webextension_polyfill__WEBPACK_IMPORTED_MODULE_0___default.a.runtime.onMessage.a
   }
 
   return true;
+});
+
+var clickHandler = function (e) {
+  alert("clicked");
+};
+
+chrome.contextMenus.removeAll(function () {
+  chrome.contextMenus.create({
+    title: "Report this link",
+    contexts: ["link"],
+    id: "report-link",
+    onclick: clickHandler
+  });
 }); // /**
 //  * A runtime.Port object, as provided by the browser:
 //  *

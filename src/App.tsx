@@ -16,6 +16,7 @@ import LoadingPage from "./components/LoadingPage";
 import { listenMessage } from "./services/extension";
 
 const Home = lazy(() => import("./components/Home"));
+const Report = lazy(()=> import("./components/Report"));
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               <>
                 <Switch location={background || location}>
                   <Route path="/" exact component={Home} />
+                  <Route path="/report" exact component={Report} />
                 </Switch>
               </>
             </HttpRequest>

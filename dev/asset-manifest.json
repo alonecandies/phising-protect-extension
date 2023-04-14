@@ -2,8 +2,12 @@
   "files": {
     "0.bundle.js": "0.bundle.js",
     "0.bundle.js.map": "0.bundle.js.map",
-    "1.bundle.js": "1.bundle.js",
-    "1.bundle.js.map": "1.bundle.js.map",
+    "2.bundle.js": "2.bundle.js",
+    "2.bundle.js.map": "2.bundle.js.map",
+    "3.bundle.js": "3.bundle.js",
+    "3.bundle.js.map": "3.bundle.js.map",
+    "4.bundle.js": "4.bundle.js",
+    "4.bundle.js.map": "4.bundle.js.map",
     "app.js": "app.bundle.js",
     "app.js.map": "app.bundle.js.map",
     "background.js": "background.bundle.js",
@@ -11,9 +15,7 @@
     "contentScript.js": "contentScript.bundle.js",
     "contentScript.js.map": "contentScript.bundle.js.map",
     "options.js": "options.bundle.js",
-    "options.js.map": "options.bundle.js.map",
-    "options.html": "options.html",
-    "popup.html": "popup.html"
+    "options.js.map": "options.bundle.js.map"
   },
   "entrypoints": [
     "app.bundle.js",

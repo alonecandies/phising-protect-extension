@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import browser from "webextension-polyfill";
 
 const connections = {};
@@ -11,7 +12,6 @@ async function initialize() {
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "get_page_info") {
-    // eslint-disable-next-line no-undef
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       sendResponse(tabs[0]);
     });
@@ -19,6 +19,20 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   return true;
 });
+
+var clickHandler = function (e) {
+  alert("clicked");
+};
+
+chrome.contextMenus.removeAll(function () {
+  chrome.contextMenus.create({
+    title: "Report this link",
+    contexts: ["link"],
+    id: "report-link",
+    onclick: clickHandler,
+  });
+});
+
 
 // /**
 //  * A runtime.Port object, as provided by the browser:

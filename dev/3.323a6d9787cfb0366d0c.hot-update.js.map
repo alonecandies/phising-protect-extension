@@ -1,0 +1,1 @@
+{"version":3,"file":"3.323a6d9787cfb0366d0c.hot-update.js","sources":["/Users/maddie/Desktop/Work/junctionx/ext-manifest2-ff/src/components/Report/index.tsx"],"sourcesContent":["export default function Report() {\n   const {} = useAppSe\n  return (\n    <div>rp</div>\n  )\n}\n"],"mappings":";;;;;;;;;;;;;;;;AAAA;AACA;AACA;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEA;;;;A","sourceRoot":""}
