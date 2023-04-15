@@ -21,7 +21,17 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 var clickHandler = function (e) {
-  alert("clicked");
+  fetch("http://localhost:45000/feedback", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      url: e.linkUrl,
+      content: "",
+      type: "",
+    }),
+  });
 };
 
 chrome.contextMenus.removeAll(function () {
@@ -32,7 +42,6 @@ chrome.contextMenus.removeAll(function () {
     onclick: clickHandler,
   });
 });
-
 
 // /**
 //  * A runtime.Port object, as provided by the browser:

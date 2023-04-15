@@ -1,236 +1,230 @@
 (this["webpackJsonpfire-phoenix"] = this["webpackJsonpfire-phoenix"] || []).push([[2],{
 
-/***/ "./node_modules/web-vitals/dist/web-vitals.js":
-/*!****************************************************!*\
-  !*** ./node_modules/web-vitals/dist/web-vitals.js ***!
-  \****************************************************/
-/*! exports provided: getCLS, getFCP, getFID, getLCP, getTTFB */
+/***/ "./src/components/Report/index.tsx":
+/*!*****************************************!*\
+  !*** ./src/components/Report/index.tsx ***!
+  \*****************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCLS", function() { return s; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFCP", function() { return l; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFID", function() { return L; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLCP", function() { return T; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTTFB", function() { return b; });
-var e,
-    t,
-    n,
-    i,
-    a = function (e, t) {
-  return {
-    name: e,
-    value: void 0 === t ? -1 : t,
-    delta: 0,
-    entries: [],
-    id: "v1-".concat(Date.now(), "-").concat(Math.floor(8999999999999 * Math.random()) + 1e12)
-  };
-},
-    r = function (e, t) {
-  try {
-    if (PerformanceObserver.supportedEntryTypes.includes(e)) {
-      if ("first-input" === e && !("PerformanceEventTiming" in self)) return;
-      var n = new PerformanceObserver(function (e) {
-        return e.getEntries().map(t);
-      });
-      return n.observe({
-        type: e,
-        buffered: !0
-      }), n;
-    }
-  } catch (e) {}
-},
-    o = function (e, t) {
-  var n = function n(i) {
-    "pagehide" !== i.type && "hidden" !== document.visibilityState || (e(i), t && (removeEventListener("visibilitychange", n, !0), removeEventListener("pagehide", n, !0)));
-  };
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Report; });
+/* harmony import */ var _chakra_ui_icons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @chakra-ui/icons */ "./node_modules/@chakra-ui/icons/dist/chakra-ui-icons.esm.js");
+/* harmony import */ var _chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @chakra-ui/react */ "./node_modules/@chakra-ui/react/dist/chakra-ui-react.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var src_hooks_useStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/hooks/useStore */ "./src/hooks/useStore.ts");
+/* harmony import */ var use_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! use-http */ "./node_modules/use-http/dist/esm/index.js");
+/* harmony import */ var _store_global__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global */ "./src/store/global.ts");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__);
+var _jsxFileName = "/Users/maddie/Desktop/Work/junctionx/ext-manifest2-ff/src/components/Report/index.tsx";
 
-  addEventListener("visibilitychange", n, !0), addEventListener("pagehide", n, !0);
-},
-    c = function (e) {
-  addEventListener("pageshow", function (t) {
-    t.persisted && e(t);
-  }, !0);
-},
-    u = "function" == typeof WeakSet ? new WeakSet() : new Set(),
-    f = function (e, t, n) {
-  var i;
-  return function () {
-    t.value >= 0 && (n || u.has(t) || "hidden" === document.visibilityState) && (t.delta = t.value - (i || 0), (t.delta || void 0 === i) && (i = t.value, e(t)));
-  };
-},
-    s = function (e, t) {
-  var n,
-      i = a("CLS", 0),
-      u = function (e) {
-    e.hadRecentInput || (i.value += e.value, i.entries.push(e), n());
-  },
-      s = r("layout-shift", u);
 
-  s && (n = f(e, i, t), o(function () {
-    s.takeRecords().map(u), n();
-  }), c(function () {
-    i = a("CLS", 0), n = f(e, i, t);
-  }));
-},
-    m = -1,
-    p = function () {
-  return "hidden" === document.visibilityState ? 0 : 1 / 0;
-},
-    v = function () {
-  o(function (e) {
-    var t = e.timeStamp;
-    m = t;
-  }, !0);
-},
-    d = function () {
-  return m < 0 && (m = p(), v(), c(function () {
-    setTimeout(function () {
-      m = p(), v();
-    }, 0);
-  })), {
-    get timeStamp() {
-      return m;
-    }
 
-  };
-},
-    l = function (e, t) {
-  var n,
-      i = d(),
-      o = a("FCP"),
-      s = function (e) {
-    "first-contentful-paint" === e.name && (p && p.disconnect(), e.startTime < i.timeStamp && (o.value = e.startTime, o.entries.push(e), u.add(o), n()));
-  },
-      m = performance.getEntriesByName("first-contentful-paint")[0],
-      p = m ? null : r("paint", s);
 
-  (m || p) && (n = f(e, o, t), m && s(m), c(function (i) {
-    o = a("FCP"), n = f(e, o, t), requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        o.value = performance.now() - i.timeStamp, u.add(o), n();
-      });
+
+
+
+
+const typeRp = ["Fake", "Scam", "Malware", "Prohibited", "Phishing", "Other"];
+function Report() {
+  const {
+    searchKey
+  } = Object(src_hooks_useStore__WEBPACK_IMPORTED_MODULE_4__["useAppSelector"])(_store_global__WEBPACK_IMPORTED_MODULE_6__["globalSelector"]);
+  const [url, setUrl] = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(searchKey);
+  const [description, setDescription] = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])("");
+  const [acceptTerm, setAcceptTerm] = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(false);
+  const [submitted, setSubmitted] = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(false);
+  const [type, setType] = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])();
+  const history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["useHistory"])();
+  const {
+    post: sendReport
+  } = Object(use_http__WEBPACK_IMPORTED_MODULE_5__["default"])("/feedback");
+  const handleSubmit = Object(react__WEBPACK_IMPORTED_MODULE_2__["useCallback"])(async () => {
+    sendReport({
+      url,
+      content: description,
+      type
+    }).then(() => {
+      setSubmitted(true);
+      setUrl("");
+      setDescription("");
+      setType("");
     });
-  }));
-},
-    h = {
-  passive: !0,
-  capture: !0
-},
-    S = new Date(),
-    y = function (i, a) {
-  e || (e = a, t = i, n = new Date(), w(removeEventListener), g());
-},
-    g = function () {
-  if (t >= 0 && t < n - S) {
-    var a = {
-      entryType: "first-input",
-      name: e.type,
-      target: e.target,
-      cancelable: e.cancelable,
-      startTime: e.timeStamp,
-      processingStart: e.timeStamp + t
-    };
-    i.forEach(function (e) {
-      e(a);
-    }), i = [];
-  }
-},
-    E = function (e) {
-  if (e.cancelable) {
-    var t = (e.timeStamp > 1e12 ? new Date() : performance.now()) - e.timeStamp;
-    "pointerdown" == e.type ? function (e, t) {
-      var n = function () {
-        y(e, t), a();
-      },
-          i = function () {
-        a();
-      },
-          a = function () {
-        removeEventListener("pointerup", n, h), removeEventListener("pointercancel", i, h);
-      };
+  }, [description, sendReport, type, url]);
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
+    direction: "column",
+    position: "relative",
+    children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_icons__WEBPACK_IMPORTED_MODULE_0__["ChevronLeftIcon"], {
+      position: "absolute",
+      boxSize: 8,
+      top: 3,
+      left: 2,
+      cursor: "pointer",
+      onClick: () => {
+        history.goBack();
+      }
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 47,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Center"], {
+      color: "primary.200",
+      fontWeight: "semibold",
+      mt: 3,
+      fontSize: "xl",
+      children: "Report this website"
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 57,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["InputGroup"], {
+      children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Input"], {
+        background: "#F7F7F7",
+        value: url,
+        onChange: e => {
+          setUrl(e.target.value);
+        },
+        mx: 4,
+        mt: 4,
+        placeholder: "Insert URL to report"
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 61,
+        columnNumber: 9
+      }, this)
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 60,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["RadioGroup"], {
+      onChange: setType,
+      value: type,
+      children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Grid"], {
+        gridTemplateColumns: "repeat(2,1fr)",
+        mx: 4,
+        children: typeRp.map(item => /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Radio"], {
+          value: item,
+          _focus: {
+            boxShadow: "none",
+            outline: "none"
+          },
+          size: "lg",
+          mt: 2,
+          children: item
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 75,
+          columnNumber: 13
+        }, this))
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 73,
+        columnNumber: 9
+      }, this)
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 72,
+      columnNumber: 7
+    }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
+      mx: 4,
+      mt: 4,
+      direction: "column",
+      children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Textarea"], {
+        value: description,
+        onChange: e => {
+          setDescription(e.target.value);
+        },
+        placeholder: "Tell us why you consider this website is a phishing website",
+        size: "sm",
+        background: "#F7F7F7",
+        _focus: {
+          boxShadow: "none",
+          outline: "none"
+        }
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 90,
+        columnNumber: 9
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Checkbox"], {
+        mt: 2,
+        isChecked: acceptTerm,
+        onChange: e => {
+          setAcceptTerm(e.target.checked);
+        },
+        children: "I agree to the Terms of Policy"
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 103,
+        columnNumber: 9
+      }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
+        children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+          w: "full",
+          h: "45px",
+          borderRadius: "3px",
+          background: "#242424",
+          color: "white",
+          fontWeight: "semibold",
+          _hover: {
+            background: "#242424"
+          },
+          onClick: handleSubmit,
+          disabled: !acceptTerm || !url,
+          mt: 2,
+          mb: 2,
+          children: "Report this website"
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 113,
+          columnNumber: 11
+        }, this)
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 112,
+        columnNumber: 9
+      }, this), submitted && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Center"], {
+        color: "primary.200",
+        mb: 3,
+        fontWeight: "semibold",
+        children: "Thank you for your report."
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 129,
+        columnNumber: 23
+      }, this)]
+    }, void 0, true, {
+      fileName: _jsxFileName,
+      lineNumber: 89,
+      columnNumber: 7
+    }, this)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 46,
+    columnNumber: 5
+  }, this);
+}
 
-      addEventListener("pointerup", n, h), addEventListener("pointercancel", i, h);
-    }(t, e) : y(t, e);
-  }
-},
-    w = function (e) {
-  ["mousedown", "keydown", "touchstart", "pointerdown"].forEach(function (t) {
-    return e(t, E, h);
-  });
-},
-    L = function (n, s) {
-  var m,
-      p = d(),
-      v = a("FID"),
-      l = function (e) {
-    e.startTime < p.timeStamp && (v.value = e.processingStart - e.startTime, v.entries.push(e), u.add(v), m());
-  },
-      h = r("first-input", l);
+/***/ }),
 
-  m = f(n, v, s), h && o(function () {
-    h.takeRecords().map(l), h.disconnect();
-  }, !0), h && c(function () {
-    var r;
-    v = a("FID"), m = f(n, v, s), i = [], t = -1, e = null, w(addEventListener), r = l, i.push(r), g();
-  });
-},
-    T = function (e, t) {
-  var n,
-      i = d(),
-      s = a("LCP"),
-      m = function (e) {
-    var t = e.startTime;
-    t < i.timeStamp && (s.value = t, s.entries.push(e)), n();
-  },
-      p = r("largest-contentful-paint", m);
+/***/ "./src/hooks/useStore.ts":
+/*!*******************************!*\
+  !*** ./src/hooks/useStore.ts ***!
+  \*******************************/
+/*! exports provided: useAppDispatch, useAppSelector */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-  if (p) {
-    n = f(e, s, t);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAppDispatch", function() { return useAppDispatch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAppSelector", function() { return useAppSelector; });
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
-    var v = function () {
-      u.has(s) || (p.takeRecords().map(m), p.disconnect(), u.add(s), n());
-    };
-
-    ["keydown", "click"].forEach(function (e) {
-      addEventListener(e, v, {
-        once: !0,
-        capture: !0
-      });
-    }), o(v, !0), c(function (i) {
-      s = a("LCP"), n = f(e, s, t), requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          s.value = performance.now() - i.timeStamp, u.add(s), n();
-        });
-      });
-    });
-  }
-},
-    b = function (e) {
-  var t,
-      n = a("TTFB");
-  t = function () {
-    try {
-      var t = performance.getEntriesByType("navigation")[0] || function () {
-        var e = performance.timing,
-            t = {
-          entryType: "navigation",
-          startTime: 0
-        };
-
-        for (var n in e) "navigationStart" !== n && "toJSON" !== n && (t[n] = Math.max(e[n] - e.navigationStart, 0));
-
-        return t;
-      }();
-
-      if (n.value = n.delta = t.responseStart, n.value < 0) return;
-      n.entries = [t], e(n);
-    } catch (e) {}
-  }, "complete" === document.readyState ? setTimeout(t, 0) : addEventListener("pageshow", t);
-};
-
-
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+const useAppDispatch = () => Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useDispatch"])();
+const useAppSelector = react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"];
 
 /***/ })
 
