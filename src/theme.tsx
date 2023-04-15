@@ -114,6 +114,9 @@ const theme = extendTheme({
       800: "#0f0f0f",
       900: "#010101",
     },
+    red: {
+      800: "#CC0000",
+    },
   },
   sizes: {
     xs: "180px",

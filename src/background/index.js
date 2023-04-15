@@ -31,6 +31,8 @@ var clickHandler = function (e) {
       content: "",
       type: "",
     }),
+  }).then(()=>{
+    alert("Thank you for your report.");
   });
 };
 

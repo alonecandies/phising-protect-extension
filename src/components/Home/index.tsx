@@ -10,7 +10,7 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import { isEmpty } from "lodash";
+import { isEmpty, isNumber } from "lodash";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppDispatch } from "src/hooks/useStore";
@@ -18,26 +18,51 @@ import { sendMessage } from "src/services/extension";
 import { setSearchKey } from "src/store/global";
 import useFetch from "use-http";
 
+const mappingCriteria = [
+  "URL length",
+  "Hostname length",
+  "IP",
+  "Dots (.)",
+  "Exclamation (!)",
+  "Equal (=)",
+  "Slash (/)",
+  "Www",
+  "Ratio digits URL",
+  "Ratio digits host",
+  "Tld in subdomain",
+  "(-) Prefix/suffix",
+  "Shortest word host",
+  "Longest words raw",
+  "Longest word path",
+  "Phish hints",
+  "Hyperlinks",
+  "Ratio internal hyperlinks",
+  "Empty title",
+  "Domain in title",
+  "Page rank",
+];
+
 export default function Home() {
   const [url, setUrl] = useState<string>("");
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [prediction, setPrediction] = useState<{
-    phishingPercentage: number;
+    phishingPercentage: number | null;
     result: string;
     url: string;
+    detail: any;
   }>({
-    phishingPercentage: 0,
+    phishingPercentage: null,
     result: "",
     url: "",
+    detail: {},
   });
-  const [detail, setDetail] = useState<any>();
   const [search, setSearch] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const { post: getPredict } = useFetch("/predict");
-
-  const { post: getDetail } = useFetch("/detail");
 
   const getURL = useCallback(async () => {
     const data = await sendMessage({ type: "get_page_info" });
@@ -49,29 +74,43 @@ export default function Home() {
   const isNewTab = useMemo(() => url.includes("chrome://"), [url]);
 
   const phishingPercentage = useMemo(() => {
-    if (!prediction.phishingPercentage) return 0;
+    if (!isNumber(prediction.phishingPercentage)) return 0;
     let result = 100 - prediction.phishingPercentage;
     return Number(result.toFixed(0));
   }, [prediction.phishingPercentage]);
-  console.log(prediction);
+
+  const handlePredict = useCallback(
+    (url) => {
+      setLoading(true);
+      setError("");
+      getPredict({ url })
+      .then((res) => {
+          if (!!res.message) {
+            setError(res.message);
+            setPrediction({
+              phishingPercentage: null,
+              result: "",
+              url: "",
+              detail: {},
+            });
+            return;
+          } else {
+            setPrediction(res.predictions[0]);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [getPredict]
+  );
 
   useEffect(() => {
     getURL();
     if (!!url) {
-      getPredict({ url }).then((res) => {
-        setPrediction(res.predictions[0]);
-      });
+      handlePredict(url);
     }
-  }, [getURL, getPredict, url]);
-
-  useEffect(() => {
-    if (!!url) {
-      getDetail({ url }).then((res) => {
-        console.log(res);
-        setDetail(res.detail);
-      });
-    }
-  }, [getDetail, url]);
+  }, [getURL, handlePredict, url]);
 
   if (isNewTab) return <Center>New tab</Center>;
 
@@ -89,9 +128,7 @@ export default function Home() {
           mt={4}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              getPredict({ url: search }).then((res) => {
-                setPrediction(res.predictions[0]);
-              });
+              handlePredict(search);
             }
           }}
           placeholder="Insert URL to check"
@@ -101,28 +138,15 @@ export default function Home() {
           mt={4}
           mr={4}
           onClick={() => {
-            getPredict({ url: search }).then((res) => {
-              setPrediction(res.predictions[0]);
-            });
+            handlePredict(search);
           }}
           cursor="pointer"
         />
       </InputGroup>
-      <Flex justify="center" align="center" my={3}>
-        <CircularProgress
-          value={phishingPercentage}
-          color={
-            phishingPercentage > 65
-              ? "primary.200"
-              : phishingPercentage > 45
-              ? "orange.200"
-              : "red.800"
-          }
-          size="135px"
-        >
-          <CircularProgressLabel
-            fontSize="2xl"
-            fontWeight="semibold"
+      {!error && (
+        <Flex justify="center" align="center" my={3}>
+          <CircularProgress
+            value={phishingPercentage}
             color={
               phishingPercentage > 65
                 ? "primary.200"
@@ -130,14 +154,35 @@ export default function Home() {
                 ? "orange.200"
                 : "red.800"
             }
+            size="135px"
+            isIndeterminate={loading}
           >
-            {phishingPercentage}%
-          </CircularProgressLabel>
-        </CircularProgress>
-      </Flex>
-      <Center mb={3} fontWeight="500">
-        {prediction.result}
-      </Center>
+            <CircularProgressLabel
+              fontSize="2xl"
+              fontWeight="semibold"
+              color={
+                phishingPercentage > 65
+                  ? "primary.200"
+                  : phishingPercentage > 45
+                  ? "orange.200"
+                  : "red.800"
+              }
+            >
+              {phishingPercentage}%
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Flex>
+      )}
+      {!error && (
+        <Center mb={3} fontWeight="500">
+          {prediction.result}
+        </Center>
+      )}
+      {!!error && (
+        <Center mb={3} fontWeight="500" mt={2}>
+          {error}
+        </Center>
+      )}
       {!isNewTab && (
         <Flex mx={4} mb={3}>
           <Button
@@ -177,28 +222,332 @@ export default function Home() {
             boxShadow: "none",
             outline: "none",
           }}
-          disabled={isEmpty(detail)}
+          disabled={isEmpty(prediction.detail)}
         >
           Details
         </Button>
       </Flex>
-      {isShowDetail && detail && (
+      {isShowDetail && prediction.detail && (
         <Flex direction="column" justify="center" align="center" mx={2} mt={2}>
           <Flex wrap="wrap" justify="center">
-            {Object.keys(detail).map((item) => (
-              <Text
-                background="primary.200"
-                mx={2}
-                my={1}
-                color="white"
-                py={1}
-                px={2}
-                borderRadius="5px"
-                fontSize="sm"
-              >
-                {item}: {detail[item]}
-              </Text>
-            ))}
+            <Text
+              background={
+                prediction.detail["length_url"] < 54 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[0]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["length_hostname"] < 54
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[1]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["ip"] === 0 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[2]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_dots"] < 4 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[3]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_qm"] < 3 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[4]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_eq"] < 6 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[5]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_slash"] < 10 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[6]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_www"] < 2 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[7]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["ratio_digits_url"] < 0.65
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[8]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["ratio_digits_host"] < 0.5
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[9]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["tld_in_subdomain"] <= 0
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[10]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["prefix_suffix"] <= 0
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[11]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["shortest_word_host"] < 15
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[12]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["longest_words_raw"] < 30
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[13]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["longest_word_path"] < 10
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[14]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["phish_hints"] < 10
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[15]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["nb_hyperlinks"] < 30
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[16]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["ratio_intHyperlinks"] > 0.4
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[17]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["empty_title"] < 5 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[18]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["domain_in_title"] === 0
+                  ? "primary.200"
+                  : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[19]}
+            </Text>
+            <Text
+              background={
+                prediction.detail["page_rank"] > 0 ? "primary.200" : "red.800"
+              }
+              mx={2}
+              my={1}
+              color="white"
+              py={1}
+              px={2}
+              borderRadius="5px"
+              fontSize="sm"
+            >
+              {mappingCriteria[20]}
+            </Text>
           </Flex>
           <ChevronUpIcon
             mt={1}
