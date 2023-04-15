@@ -63,6 +63,7 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   const { post: getPredict } = useFetch("/predict");
+  const { post: getDetail } = useFetch("/detail");
 
   const getURL = useCallback(async () => {
     const data = await sendMessage({ type: "get_page_info" });
@@ -84,7 +85,7 @@ export default function Home() {
       setLoading(true);
       setError("");
       getPredict({ url })
-      .then((res) => {
+        .then((res) => {
           if (!!res.message) {
             setError(res.message);
             setPrediction({
@@ -96,13 +97,21 @@ export default function Home() {
             return;
           } else {
             setPrediction(res.predictions[0]);
+            if (!res.predictions[0]?.detail) {
+              getDetail({ url }).then((res) => {
+                setPrediction((prev) => ({
+                  ...prev,
+                  detail: res.detail,
+                }));
+              });
+            }
           }
         })
         .finally(() => {
           setLoading(false);
         });
     },
-    [getPredict]
+    [getDetail, getPredict]
   );
 
   useEffect(() => {

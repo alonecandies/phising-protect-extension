@@ -52,6 +52,9 @@ function Home() {
   const {
     post: getPredict
   } = Object(use_http__WEBPACK_IMPORTED_MODULE_8__["default"])("/predict");
+  const {
+    post: getDetail
+  } = Object(use_http__WEBPACK_IMPORTED_MODULE_8__["default"])("/detail");
   const getURL = Object(react__WEBPACK_IMPORTED_MODULE_3__["useCallback"])(async () => {
     const data = await Object(src_services_extension__WEBPACK_IMPORTED_MODULE_6__["sendMessage"])({
       type: "get_page_info"
@@ -82,12 +85,24 @@ function Home() {
         });
         return;
       } else {
+        var _res$predictions$;
+
         setPrediction(res.predictions[0]);
+
+        if (!((_res$predictions$ = res.predictions[0]) !== null && _res$predictions$ !== void 0 && _res$predictions$.detail)) {
+          getDetail({
+            url
+          }).then(res => {
+            setPrediction(prev => ({ ...prev,
+              detail: res.detail
+            }));
+          });
+        }
       }
     }).finally(() => {
       setLoading(false);
     });
-  }, [getPredict]);
+  }, [getDetail, getPredict]);
   Object(react__WEBPACK_IMPORTED_MODULE_3__["useEffect"])(() => {
     getURL();
 
@@ -99,7 +114,7 @@ function Home() {
     children: "New tab"
   }, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 115,
+    lineNumber: 124,
     columnNumber: 24
   }, this);
   return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
@@ -122,12 +137,12 @@ function Home() {
         placeholder: "Insert URL to check"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 120,
+        lineNumber: 129,
         columnNumber: 9
       }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["InputRightElement"], {
         children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_icons__WEBPACK_IMPORTED_MODULE_0__["SearchIcon"], {}, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 137,
+          lineNumber: 146,
           columnNumber: 21
         }, this),
         mt: 4,
@@ -138,12 +153,12 @@ function Home() {
         cursor: "pointer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 136,
+        lineNumber: 145,
         columnNumber: 9
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 119,
+      lineNumber: 128,
       columnNumber: 7
     }, this), !error && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
       justify: "center",
@@ -161,17 +176,17 @@ function Home() {
           children: [phishingPercentage, "%"]
         }, void 0, true, {
           fileName: _jsxFileName,
-          lineNumber: 160,
+          lineNumber: 169,
           columnNumber: 13
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 148,
+        lineNumber: 157,
         columnNumber: 11
       }, this)
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 147,
+      lineNumber: 156,
       columnNumber: 9
     }, this), !error && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Center"], {
       mb: 3,
@@ -179,7 +194,7 @@ function Home() {
       children: prediction.result
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 177,
+      lineNumber: 186,
       columnNumber: 9
     }, this), !!error && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Center"], {
       mb: 3,
@@ -188,7 +203,7 @@ function Home() {
       children: error
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 182,
+      lineNumber: 191,
       columnNumber: 9
     }, this), !isNewTab && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
       mx: 4,
@@ -210,12 +225,12 @@ function Home() {
         children: "Report this website"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 188,
+        lineNumber: 197,
         columnNumber: 11
       }, this)
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 187,
+      lineNumber: 196,
       columnNumber: 9
     }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
       mx: 4,
@@ -242,12 +257,12 @@ function Home() {
         children: "Details"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 206,
+        lineNumber: 215,
         columnNumber: 9
       }, this)
     }, void 0, false, {
       fileName: _jsxFileName,
-      lineNumber: 205,
+      lineNumber: 214,
       columnNumber: 7
     }, this), isShowDetail && prediction.detail && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Flex"], {
       direction: "column",
@@ -270,7 +285,7 @@ function Home() {
           children: mappingCriteria[0]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 233,
+          lineNumber: 242,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["length_hostname"] < 54 ? "primary.200" : "red.800",
@@ -284,7 +299,7 @@ function Home() {
           children: mappingCriteria[1]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 247,
+          lineNumber: 256,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["ip"] === 0 ? "primary.200" : "red.800",
@@ -298,7 +313,7 @@ function Home() {
           children: mappingCriteria[2]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 263,
+          lineNumber: 272,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_dots"] < 4 ? "primary.200" : "red.800",
@@ -312,7 +327,7 @@ function Home() {
           children: mappingCriteria[3]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 277,
+          lineNumber: 286,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_qm"] < 3 ? "primary.200" : "red.800",
@@ -326,7 +341,7 @@ function Home() {
           children: mappingCriteria[4]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 291,
+          lineNumber: 300,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_eq"] < 6 ? "primary.200" : "red.800",
@@ -340,7 +355,7 @@ function Home() {
           children: mappingCriteria[5]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 305,
+          lineNumber: 314,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_slash"] < 10 ? "primary.200" : "red.800",
@@ -354,7 +369,7 @@ function Home() {
           children: mappingCriteria[6]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 319,
+          lineNumber: 328,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_www"] < 2 ? "primary.200" : "red.800",
@@ -368,7 +383,7 @@ function Home() {
           children: mappingCriteria[7]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 333,
+          lineNumber: 342,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["ratio_digits_url"] < 0.65 ? "primary.200" : "red.800",
@@ -382,7 +397,7 @@ function Home() {
           children: mappingCriteria[8]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 347,
+          lineNumber: 356,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["ratio_digits_host"] < 0.5 ? "primary.200" : "red.800",
@@ -396,7 +411,7 @@ function Home() {
           children: mappingCriteria[9]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 363,
+          lineNumber: 372,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["tld_in_subdomain"] <= 0 ? "primary.200" : "red.800",
@@ -410,7 +425,7 @@ function Home() {
           children: mappingCriteria[10]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 379,
+          lineNumber: 388,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["prefix_suffix"] <= 0 ? "primary.200" : "red.800",
@@ -424,7 +439,7 @@ function Home() {
           children: mappingCriteria[11]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 395,
+          lineNumber: 404,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["shortest_word_host"] < 15 ? "primary.200" : "red.800",
@@ -438,7 +453,7 @@ function Home() {
           children: mappingCriteria[12]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 411,
+          lineNumber: 420,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["longest_words_raw"] < 30 ? "primary.200" : "red.800",
@@ -452,7 +467,7 @@ function Home() {
           children: mappingCriteria[13]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 427,
+          lineNumber: 436,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["longest_word_path"] < 10 ? "primary.200" : "red.800",
@@ -466,7 +481,7 @@ function Home() {
           children: mappingCriteria[14]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 443,
+          lineNumber: 452,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["phish_hints"] < 10 ? "primary.200" : "red.800",
@@ -480,7 +495,7 @@ function Home() {
           children: mappingCriteria[15]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 459,
+          lineNumber: 468,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["nb_hyperlinks"] < 30 ? "primary.200" : "red.800",
@@ -494,7 +509,7 @@ function Home() {
           children: mappingCriteria[16]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 475,
+          lineNumber: 484,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["ratio_intHyperlinks"] > 0.4 ? "primary.200" : "red.800",
@@ -508,7 +523,7 @@ function Home() {
           children: mappingCriteria[17]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 491,
+          lineNumber: 500,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["empty_title"] < 5 ? "primary.200" : "red.800",
@@ -522,7 +537,7 @@ function Home() {
           children: mappingCriteria[18]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 507,
+          lineNumber: 516,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["domain_in_title"] === 0 ? "primary.200" : "red.800",
@@ -536,7 +551,7 @@ function Home() {
           children: mappingCriteria[19]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 521,
+          lineNumber: 530,
           columnNumber: 13
         }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_react__WEBPACK_IMPORTED_MODULE_1__["Text"], {
           background: prediction.detail["page_rank"] > 0 ? "primary.200" : "red.800",
@@ -550,12 +565,12 @@ function Home() {
           children: mappingCriteria[20]
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 537,
+          lineNumber: 546,
           columnNumber: 13
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 232,
+        lineNumber: 241,
         columnNumber: 11
       }, this), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__["jsxDEV"])(_chakra_ui_icons__WEBPACK_IMPORTED_MODULE_0__["ChevronUpIcon"], {
         mt: 1,
@@ -565,17 +580,17 @@ function Home() {
         onClick: () => setIsShowDetail(false)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 552,
+        lineNumber: 561,
         columnNumber: 11
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 231,
+      lineNumber: 240,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 118,
+    lineNumber: 127,
     columnNumber: 5
   }, this);
 }
